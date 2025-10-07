@@ -1,0 +1,35 @@
+{
+    "name": "BasketStat Local",
+    "short_name": "BasketStat",
+    "description": "Une application de suivi de statistiques de basketball qui fonctionne hors ligne.",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#343a40",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "https://www.webjeje.com/online/webapp/bbpwa/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "https://www.webjeje.com/online/webapp/bbpwa/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        },
+        {
+            "src": "https://www.webjeje.com/online/webapp/bbpwa/icon-maskable-192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "maskable"
+        },
+        {
+            "src": "https://www.webjeje.com/online/webapp/bbpwa/icon-maskable-512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        }
+    ]
+}
+

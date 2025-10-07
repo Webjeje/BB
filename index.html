@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasketStat Local</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#343a40">
+    <!-- Librairie pour le QR Code -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>BasketStat</h1>
+            <div class="player-info">
+                <input type="text" id="playerName" placeholder="Nom du joueur...">
+                <input type="text" id="observerName" placeholder="Observateur...">
+            </div>
+            <div class="chrono-controls">
+                <span id="timer">00:00:00</span>
+                <button id="startStopBtn" class="control-btn" title="Démarrer le chronomètre">
+                    <!-- Icone SVG Play -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+                    <span>Démarrer</span>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <section class="stats-display">
+                <div class="stat-item">
+                    <span class="value" id="totalPoints">0</span>
+                    <span class="label">Points</span>
+                </div>
+                <div class="stat-item">
+                    <span class="value" id="totalActions">0</span>
+                    <span class="label">Actions</span>
+                </div>
+                <div class="stat-item">
+                    <span class="value" id="apm">0.0</span>
+                    <span class="label">Act/min</span>
+                </div>
+            </section>
+
+            <section id="action-buttons-grid" class="action-buttons-grid">
+                <button class="action-btn tile-1" data-action="passe_perdue" data-points="1">
+                    <span class="points">+1pt</span><span class="desc">Passe Perdue</span>
+                </button>
+                <button class="action-btn tile-2" data-action="passe_reussie" data-points="2">
+                    <span class="points">+2pts</span><span class="desc">Passe Réussie</span>
+                </button>
+                <button class="action-btn tile-3" data-action="cercle_touche" data-points="1">
+                    <span class="points">+1pt</span><span class="desc">Cercle Touché</span>
+                </button>
+                <button class="action-btn tile-4" data-action="panier_marque" data-points="2">
+                    <span class="points">+2pts</span><span class="desc">Panier Marqué</span>
+                </button>
+                <button class="action-btn tile-5" data-action="interception" data-points="5">
+                    <span class="points">+5pts</span><span class="desc">Interception</span>
+                </button>
+            </section>
+        </main>
+
+        <footer>
+            <button id="undoBtn" class="footer-btn" title="Annuler la dernière action" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"></path></svg>
+            </button>
+            <button id="redoBtn" class="footer-btn" title="Rétablir la dernière action" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.72.72 5.12 1.88L13 16h9V7l-3.6 3.6z"></path></svg>
+            </button>
+            <button id="resetBtn" class="footer-btn" title="Réinitialiser la session">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-8h2v4h-2zm0-2h2v2h-2z" opacity=".3"></path><path d="M11 16h2v-4h-2v4zm0-6h2v2h-2v2zm.99-5C6.47 5 2 9.48 2 15s4.47 10 9.99 10C17.52 25 22 20.52 22 15S17.52 5 11.99 5zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg>
+            </button>
+            <button id="exportBtn" class="footer-btn" title="Exporter en CSV">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg>
+            </button>
+            <button id="qrCodeBtn" class="footer-btn" title="Exporter en QR Code">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 21h8v-8h-8v8zm2-6h4v4h-4v-4z"/></svg>
+            </button>
+            <button id="analysisBtn" class="footer-btn ai-btn" title="Analyse du Coach IA" disabled>
+                ✨ Analyse IA
+            </button>
+        </footer>
+    </div>
+
+    <!-- Fenêtre Modale pour l'Analyse IA -->
+    <div id="ai-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Analyse du Coach</h2>
+                <button id="modal-close-btn" class="modal-close-btn">&times;</button>
+            </div>
+            <div id="modal-body" class="modal-body">
+                <!-- Le contenu généré par l'IA sera injecté ici -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="db.js"></script>
+    <script src="app.js"></script>
+    <script src="sw-register.js"></script>
+
+</body>
+</html>
+
